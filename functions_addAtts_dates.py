@@ -3,7 +3,18 @@ import csv, json
 import datetime
 
 def quarter(year, month):
-    # return the quarter based on the string slice representing the month in the chosen format
+    """Function to compute the quarter the date belongs to based on the year and month.
+
+    Args:
+        year (str): the year's string representation.
+        month (str): the month of the year's string representation.
+
+    Raises:
+        Exception: month must have values between 01 and 12.
+
+    Returns:
+       str: the quarter's string representation.
+    """
     q1 = ["01","02","03"]
     q2 = ["04","05","06"]
     q3 = ["07","08","09"]
@@ -21,17 +32,30 @@ def quarter(year, month):
 
     
 def weekday(date):
+    """Function that makes use of the datetime module to find a given date's corrisponding week day.
+
+    Args:
+        date (str): The date's string representation.
+
+    Returns:
+        str: English day of the week string representation.
+    """
     year, month, day = [int(x) for x in date.split("-")]    
     ddate = datetime.date(year, month, day)
-    # return string with weekday in english
     return ddate.strftime("%A")
 
 
 def add_dates_attributes(oldDate_csv, newDate_csv):
+    """Function to create a new file with needed attributes added to the original file.
+
+    Args:
+        oldDate_csv (FileDescriptorOrPath): Original file to add attributes to.
+        newDate_csv (FileDescriptorOrPath): Returned file with needed attributes.
+    """
     with open(oldDate_csv, "r", newline = "") as ifile:
         with open(newDate_csv, "w", newline = "") as ofile:
             dreader = csv.DictReader(ifile)
-            dwriter = csv.DictWriter(ofile, fieldnames = ["date","date_pk","month","year","quarter","weekday"])
+            dwriter = csv.DictWriter(ofile, fieldnames = ["date_id","date","month","year","quarter","weekday"])
             dwriter.writeheader()
             # length of the dates without timestamps (also month and year formats)
             dateFormat = 10
@@ -40,11 +64,11 @@ def add_dates_attributes(oldDate_csv, newDate_csv):
 
             for row in dreader:
                 date = row["date"][:dateFormat]
-                date_pk = row["date_pk"]
+                date_id = row["date_pk"]
                 month = row["date"][:monthFormat]
                 year = row["date"][:yearFormat]
                 quart = quarter(year, month)
                 weekd = weekday(date)
 
-                newrow = {"date":date, "date_pk":date_pk, "month":month, "year":year, "quarter":quart, "weekday":weekd}
+                newrow = {"date_id":date_id, "date":date, "month":month, "year":year, "quarter":quart, "weekday":weekd}
                 dwriter.writerow(newrow)
