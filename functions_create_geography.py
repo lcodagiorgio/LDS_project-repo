@@ -1,6 +1,24 @@
-import sys, os, getopt, datetime, time
-import csv, json
+import csv
 import requests
+
+def clean_geo(oldGeo_csv, newGeo_csv):
+    with open(oldGeo_csv, "r", newline = "", encoding = "cp437") as oldGeo:
+        with open(newGeo_csv, "w", newline = "", encoding = "utf-8") as newGeo:
+            dreader = csv.DictReader(oldGeo, delimiter=",")
+            fieldnames = dreader.fieldnames
+            dwriter = csv.DictWriter(newGeo, fieldnames = fieldnames, delimiter=",")
+            dwriter.writeheader()
+            
+            for row in dreader:
+                newrow = row.copy()
+                ind_par = newrow["city"].find(" (")
+                newrow["city"] = newrow["city"].replace(",", "")
+                newrow["state"] = newrow["state"].replace(",", "")
+                if ind_par == -1:
+                    dwriter.writerow(newrow)
+                else:
+                    newrow["city"] = newrow["city"][:ind_par]
+                    dwriter.writerow(newrow)
 
 def get_address(latitude, longitude):
     # take in input the latitude and longitude values and convert them to strings
@@ -26,8 +44,8 @@ def add_geo_attributes(oldGeo_csv, newGeo_csv):
     # Function to create a new file with needed attributes added to the original file.
     # oldGeo_csv (FileDescriptorOrPath): Original file to add attributes to.
     # newGeo_csv (FileDescriptorOrPath): Returned file with needed attributes.
-    with open(oldGeo_csv, "r", newline = "") as ifile:
-        with open(newGeo_csv, "w", newline = "") as ofile:
+    with open(oldGeo_csv, "r", newline = "", encoding = "utf-8") as ifile:
+        with open(newGeo_csv, "w", newline = "", encoding = "utf-8") as ofile:
             dreader = csv.DictReader(ifile)
             dwriter = csv.DictWriter(ofile, fieldnames = ["geo_id","latitude","longitude","city","state","country"])
             dwriter.writeheader()
