@@ -122,6 +122,8 @@ def add_unique_ids_2(data, columns, id_name='id', path = 'DATA//NEW_TAB//NEW_TAB
 
 
 def quarter(year, month):
+    year_str = str(year)
+    month_str = str(month)
     """Function to compute the quarter the date belongs to based on the year and month.
 
     Args:
@@ -138,14 +140,14 @@ def quarter(year, month):
     q2 = ["04","05","06"]
     q3 = ["07","08","09"]
     q4 = ["10","11","12"]
-    if month[5:] in q1:
-        return (year + "-Q1")
-    elif month[5:] in q2:
-        return (year + "-Q2")
-    elif month[5:] in q3:
-        return (year + "-Q3")
-    elif month[5:] in q4:
-        return (year + "-Q4")
+    if month_str[4:] in q1:
+        return (year_str + "Q1")
+    elif month_str[4:] in q2:
+        return (year_str + "Q2")
+    elif month_str[4:] in q3:
+        return (year_str + "Q3")
+    elif month_str[4:] in q4:
+        return (year_str + "Q4")
     else:
         raise Exception("Month not in range 01 to 12")
 
@@ -174,7 +176,7 @@ def add_dates_attributes(oldDate_csv, newDate_csv):
     with open(oldDate_csv, "r", newline = "") as ifile:
         with open(newDate_csv, "w", newline = "") as ofile:
             dreader = csv.DictReader(ifile)
-            dwriter = csv.DictWriter(ofile, fieldnames = ["date_id","date","month","year","quarter","weekday"])
+            dwriter = csv.DictWriter(ofile, fieldnames = ["date_id","date","day","month","year","quarter","weekday"])
             dwriter.writeheader()
             # length of the dates without timestamps (also month and year formats)
             dateFormat = 10
@@ -182,14 +184,17 @@ def add_dates_attributes(oldDate_csv, newDate_csv):
             yearFormat = 4
 
             for row in dreader:
-                date = row["date"][:dateFormat]
-                date_id = row["date_pk"]
-                month = row["date"][:monthFormat]
-                year = row["date"][:yearFormat]
+                y,m,d = tuple(row["date"][:dateFormat].split("-"))
+                
+                date = datetime.date(int(y),int(m),int(d))
+                date_id = int(row["date_pk"])
+                day = int(row["date"][:dateFormat].replace("-",""))
+                month = int(row["date"][:monthFormat].replace("-",""))
+                year = int(row["date"][:yearFormat].replace("-",""))
                 quart = quarter(year, month)
-                weekd = weekday(date)
+                weekd = date.strftime("%A")
 
-                newrow = {"date_id":date_id, "date":date, "month":month, "year":year, "quarter":quart, "weekday":weekd}
+                newrow = {"date_id":date_id, "date":date, "day":day, "month":month, "year":year, "quarter":quart, "weekday":weekd}
                 dwriter.writerow(newrow)
 
 

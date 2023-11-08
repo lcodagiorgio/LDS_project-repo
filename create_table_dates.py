@@ -5,8 +5,8 @@ import getopt, sys, os
 # defining default repository paths to retrieve/store files from/to
 # input file (.xml)
 # output file (.csv)
-iXml = ".\\data\\dates.xml"
-oCsv = ".\\new_tables\\new_dates.csv"
+iXml = ".\\DATA\\dates.xml"
+oCsv = ".\\partial_tables\\new_dates.csv"
 # command line execution with options ("-i" -> input file.xml, "-o" -> output file.csv)
 opts, args = getopt.getopt(sys.argv[1:], "i:o:")
 opts = dict(opts)
@@ -26,4 +26,4 @@ oCsv = ".\\new_tables\\Dates.csv"
 add_dates_attributes(iCsv, oCsv)
 
 # removing the temporary dates table from the repository
-os.remove(".\\new_tables\\new_dates.csv")
+os.remove(".\\partial_tables\\new_dates.csv")
