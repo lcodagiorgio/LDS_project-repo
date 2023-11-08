@@ -1,4 +1,5 @@
 from functions_create_table import *
+
 data = []
 
 with open('DATA//Police.csv', 'r') as f:
@@ -19,5 +20,6 @@ data, partecipant = add_unique_ids_2(data, ['participant_age_group', 'participan
                                             "partecipant_id", "new_tables/Partecipant.csv")
 # ceate the custody table
 write_to_csv(data, "new_tables/Custody.csv")
+
 
 
