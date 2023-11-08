@@ -28,7 +28,7 @@ def write_to_csv(file, path):
         writer.writerows(file)
 
 
-def add_crime_gravity(data, age_path="DATA//dict_partecipant_age.json", status_path="DATA//dict_partecipant_status.json", type_path="DATA//dict_partecipant_type.json"):
+def add_crime_gravity(data, age_path="DATA//dict_participant_age.json", status_path="DATA//dict_participant_status.json", type_path="DATA//dict_participant_type.json"):
     # load json file content as a dictionary
     with open(age_path) as f:
         dic_p_age = json.load(f)

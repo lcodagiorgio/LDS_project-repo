@@ -1,4 +1,4 @@
-participant_age_group,participant_gender,participant_status,participant_type,partecipant_id
+participant_age_group,participant_gender,participant_status,participant_type,participant_id
 Adult 18+,Male,Arrested,Suspect,0
 Teen 12-17,Male,Unharmed,Suspect,1
 Adult 18+,Female,Arrested,Suspect,2
