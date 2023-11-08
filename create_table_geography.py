@@ -18,5 +18,5 @@ if len(sys.argv[1:]) > 1:
 
 # defining default repository paths to retrieve/store files from/to
 iGeo = ".\\partial_tables\\new_geography.csv" # input file (geography table without attributes))
-oGeo = ".\\new_tables\\geography.csv" # output file (with attributes)
+oGeo = ".\\new_tables\\Geography.csv" # output file (with attributes)
 clean_geo(iGeo, oGeo) # by default, only clean the attributes
