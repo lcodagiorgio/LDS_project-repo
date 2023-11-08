@@ -17,7 +17,7 @@ data, gun = add_unique_ids_2(data, ['gun_stolen','gun_type'], "gun_id", "new_tab
 # Create the Partecipant table
 data, partecipant = add_unique_ids_2(data, ['participant_age_group', 'participant_gender',
                                           'participant_status','participant_type',],
-                                            "partecipant_id", "new_tables/Partecipant.csv")
+                                            "participant_id", "new_tables/Participant.csv")
 # ceate the custody table
 write_to_csv(data, "new_tables/Custody.csv")
 
