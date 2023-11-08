@@ -1,5 +1,5 @@
 from functions_xmlToCsv import *
-from functions_addAtts_dates import *
+from functions_create_table import *
 import getopt, sys, os
 
 # defining default repository paths to retrieve/store files from/to

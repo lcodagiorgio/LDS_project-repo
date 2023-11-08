@@ -1,4 +1,4 @@
-from functions_create_geography import *
+from functions_create_table import *
 import getopt, sys, os
 
 # command line execution with options ("-i" -> input file.csv, "-o" -> output file.csv)
