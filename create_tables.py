@@ -10,15 +10,15 @@ with open('DATA//Police.csv', 'r') as f:
 add_crime_gravity(data)
 
 # Create the geograpy table 
-data, geography = add_unique_ids_2(data, ["latitude", "longitude"], "geo_id", "DATA/NEW_TAB/geography.csv")
+data, geography = add_unique_ids_2(data, ["latitude", "longitude"], "geo_id", "partial_tables/geography.csv")
 # Create the gun table
-data, gun = add_unique_ids_2(data, ['gun_stolen','gun_type'], "gun_id", "DATA/NEW_TAB/gun.csv")
+data, gun = add_unique_ids_2(data, ['gun_stolen','gun_type'], "gun_id", "new_tables/gun.csv")
 # Create the Partecipant table
 data, partecipant = add_unique_ids_2(data, ['participant_age_group', 'participant_gender',
                                           'participant_status','participant_type',],
-                                            "partecipant_id", "DATA/NEW_TAB/partecipant.csv")
+                                            "partecipant_id", "new_tables/partecipant.csv")
 # ceate the custody table
-write_to_csv(data, "DATA/NEW_TAB/custody.csv")
+write_to_csv(data, "new_tables/custody.csv")
 
 
 

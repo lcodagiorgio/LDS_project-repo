@@ -1,11 +1,7 @@
 from functions_create_geography import *
 import getopt, sys, os
 
-# defining default repository paths to retrieve/store files from/to
-iGeo = ".\\new_tables\\geography.csv" # input file (geography table without attributes))
-oGeo = ".\\new_tables\\new_geography.csv" # output file (with attributes)
-
-# command line execution with options ("-i" -> input file.xml, "-o" -> output file.csv)
+# command line execution with options ("-i" -> input file.csv, "-o" -> output file.csv)
 opts, args = getopt.getopt(sys.argv[1:], "i:o:")
 opts = dict(opts)
 
@@ -13,6 +9,14 @@ opts = dict(opts)
 if len(sys.argv[1:]) > 1:
     iGeo = opts["-i"]
     oGeo = opts["-o"]
+    if opts["-t"] == "add":
+        clean_geo(iGeo, oGeo)
+    elif opts["-t"] == "write":
+        # function to add the needed attributes to the geography.csv table
+        # takes a very long time!!
+        add_geo_attributes(iGeo, oGeo)
 
-# function to add the needed attributes to the geography.csv table
-add_geo_attributes(iGeo, oGeo)
+# defining default repository paths to retrieve/store files from/to
+iGeo = ".\\partial_tables\\new_geography.csv" # input file (geography table without attributes))
+oGeo = ".\\new_tables\\geography.csv" # output file (with attributes)
+clean_geo(iGeo, oGeo) # by default, only clean the attributes
