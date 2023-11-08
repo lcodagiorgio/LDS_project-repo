@@ -1,5 +1,5 @@
 from functions_xmlToCsv import *
-from functions_addAtts_dates import *
+from functions_create_table import *
 import getopt, sys, os
 
 # defining default repository paths to retrieve/store files from/to
@@ -20,7 +20,7 @@ if len(sys.argv[1:]) > 1:
 xml_to_csv(iXml, oCsv)
 
 iCsv = oCsv
-oCsv = ".\\new_tables\\dates.csv"
+oCsv = ".\\new_tables\\Dates.csv"
 
 # function to add the needed attributes to the obtained .csv file
 add_dates_attributes(iCsv, oCsv)
