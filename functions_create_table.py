@@ -151,20 +151,6 @@ def quarter(year, month):
     else:
         raise Exception("Month not in range 01 to 12")
 
-    
-def weekday(date):
-    """Function that makes use of the datetime module to find a given date's corrisponding week day.
-
-    Args:
-        date (str): The date's string representation.
-
-    Returns:
-        str: English day of the week string representation.
-    """
-    year, month, day = [int(x) for x in date.split("-")]    
-    ddate = datetime.date(year, month, day)
-    return ddate.strftime("%A")
-
 
 def add_dates_attributes(oldDate_csv, newDate_csv):
     """Function to create a new file with needed attributes added to the original file.
