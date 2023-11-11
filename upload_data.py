@@ -1,4 +1,4 @@
-from functions_load_tables import *
+from functions_upload_tables import *
 
 # Set up the connection string
 server = 'tcp:lds.di.unipi.it'
