@@ -152,8 +152,6 @@ def add_unique_ids_2(data, columns, id_name='id', path = 'DATA//NEW_TAB//NEW_TAB
 
 
 def quarter(year, month):
-    year_str = str(year)
-    month_str = str(month)
     """Function to compute the quarter the date belongs to based on the year and month.
 
     Args:
@@ -166,10 +164,17 @@ def quarter(year, month):
     Returns:
        str: the quarter's string representation.
     """
+    # casting to make sure year and month are passed as strings
+    year_str = str(year)
+    month_str = str(month)
+    
+    # defining the months belonging to each quarter
     q1 = ["01","02","03"]
     q2 = ["04","05","06"]
     q3 = ["07","08","09"]
     q4 = ["10","11","12"]
+    
+    # returning the correct quarter with string type
     if month_str[4:] in q1:
         return (year_str + "Q1")
     elif month_str[4:] in q2:
@@ -193,48 +198,73 @@ def add_dates_attributes(oldDate_csv, newDate_csv):
         with open(newDate_csv, "w", newline = "") as ofile:
             dreader = csv.DictReader(ifile)
             dwriter = csv.DictWriter(ofile, fieldnames = ["date_id","date","day","month","year","quarter","weekday"])
+            # writing the header of the new file
             dwriter.writeheader()
             # length of the dates without timestamps (also month and year formats)
             dateFormat = 10
             monthFormat = 7
             yearFormat = 4
 
+            # reading every row in the input file as a dict(attName,attValue)
             for row in dreader:
+                # str representation of year, month and day values
                 y,m,d = tuple(row["date"][:dateFormat].split("-"))
-                
+                # extracting date from the int representation of y, m, d
                 date = datetime.date(int(y),int(m),int(d))
                 date_id = int(row["date_pk"])
                 day = int(row["date"][:dateFormat].replace("-",""))
                 month = int(row["date"][:monthFormat].replace("-",""))
                 year = int(row["date"][:yearFormat].replace("-",""))
                 quart = quarter(year, month)
+                # retrieving the week day from the date
                 weekd = date.strftime("%A")
-
+                # composing the new dict-row to write in the output file
                 newrow = {"date_id":date_id, "date":date, "day":day, "month":month, "year":year, "quarter":quart, "weekday":weekd}
                 dwriter.writerow(newrow)
 
 
 
 def clean_geo(oldGeo_csv, newGeo_csv):
+    """Function to clean the geography table removing parts of or correcting values of the attributes
+
+    Args:
+        oldGeo_csv (FileDescriptorOrPath): Original file to clean attributes of.
+        newGeo_csv (FileDescriptorOrPath): New file with cleaned attributes.
+    """
     with open(oldGeo_csv, "r", newline = "", encoding = "cp437") as oldGeo:
         with open(newGeo_csv, "w", newline = "", encoding = "utf-8") as newGeo:
             dreader = csv.DictReader(oldGeo, delimiter=",")
             fieldnames = dreader.fieldnames
             dwriter = csv.DictWriter(newGeo, fieldnames = fieldnames, delimiter=",")
+            # writing the header of the new file
             dwriter.writeheader()
             
+            # reading every row in the input file as a dict(attName,attValue)
             for row in dreader:
                 newrow = row.copy()
+                # storing the index (if not found return -1) of the parenthesis
                 ind_par = newrow["city"].find(" (")
+                # replacing, if found, the in-value comma with an empty string in the attributes city and state
                 newrow["city"] = newrow["city"].replace(",", "")
                 newrow["state"] = newrow["state"].replace(",", "")
+                # if the parenthesis is not found, write the row as it is
                 if ind_par == -1:
                     dwriter.writerow(newrow)
                 else:
+                    # if found, write the row but with such attribute value without info in parentheses
                     newrow["city"] = newrow["city"][:ind_par]
                     dwriter.writerow(newrow)
 
 def get_address(latitude, longitude):
+    """Function to get geolocation fields from API passing latitude and longitude values
+
+    Args:
+        latitude (str|int): latitude of the location
+        longitude (str|int): longitude of the location
+
+    Returns:
+        tuple(str, str, str): city, state, country
+    """
     # take in input the latitude and longitude values and convert them to strings
     latitude = str(latitude)
     longitude = str(longitude)
@@ -255,21 +285,27 @@ def get_address(latitude, longitude):
         return "Unknown", "Unknown", "Unknown"
     
 def add_geo_attributes(oldGeo_csv, newGeo_csv):
-    # Function to create a new file with needed attributes added to the original file.
-    # oldGeo_csv (FileDescriptorOrPath): Original file to add attributes to.
-    # newGeo_csv (FileDescriptorOrPath): Returned file with needed attributes.
+    """Function to create a new file with needed attributes added to the original file.
+
+    Args:
+        oldGeo_csv (FileDescriptorOrPath): Original file to add attributes to.
+        newGeo_csv (FileDescriptorOrPath): Returned file with added attributes.
+    """
     with open(oldGeo_csv, "r", newline = "", encoding = "utf-8") as ifile:
         with open(newGeo_csv, "w", newline = "", encoding = "utf-8") as ofile:
             dreader = csv.DictReader(ifile)
             dwriter = csv.DictWriter(ofile, fieldnames = ["geo_id","latitude","longitude","city","state","country"])
+            # writing the header of the new file
             dwriter.writeheader()
 
+            # reading every row in the input file as a dict(attName,attValue)
             for row in dreader:
                 geo_id = row["geo_id"]
                 latitude = row["latitude"]
                 longitude = row["longitude"]
+                # unrolling the tuple with city, state and country information extracted from the json
                 city, state, country = get_address(latitude, longitude)
-
+                # composing the new dict-row to write in the output file
                 newrow = {"geo_id":geo_id, "latitude":latitude, "longitude":longitude, "city":city, "state":state, "country":country}
                 dwriter.writerow(newrow)
 
