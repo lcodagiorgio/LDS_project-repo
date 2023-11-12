@@ -1,6 +1,7 @@
 import pyodbc
 import csv
 from functions_create_table import *
+
 def connect_to_server(server, database, username, password, driver):
     """Function to connect to the server
 
@@ -24,7 +25,6 @@ def connect_to_server(server, database, username, password, driver):
         print("Connection successful")
     except pyodbc.Error as e:
         print(f"Error connecting to database: {e}")
-
 
     return conn
 

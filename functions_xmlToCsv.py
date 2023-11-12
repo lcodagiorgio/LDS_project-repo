@@ -1,7 +1,15 @@
 import xml.etree.ElementTree as ET
 import csv
 
-def get_names(root) -> list:
+def get_names(root):
+    """Function to extract the names of the elements (attributes in xml element format) from a xml file.
+
+    Args:
+        root (ElementTree obj): root object of the xml tree
+
+    Returns:
+        list: list of the element names (attribute names in xml element format)
+    """
     # list of distinct attribute names (header) to pass to the csv.writer object
     attNames = []
     for row in root:
@@ -10,7 +18,15 @@ def get_names(root) -> list:
                 attNames.append(att.tag)
     return attNames
 
-def get_values(root) -> list:
+def get_values(root):
+    """Function to extract the values of the elements (attributes in xml element format) from a xml file.
+
+    Args:
+        root (ElementTree obj): root object of the xml tree
+
+    Returns:
+        list: list of the element's values (attribute values in xml element format)
+    """
     data = []
     for row in root:
         rowValues = []
@@ -20,11 +36,18 @@ def get_values(root) -> list:
     return data
 
 
-def xml_to_csv(input_xml, output_csv):  
+def xml_to_csv(input_xml, output_csv):
+    """Function to convert an input file in xml element format to a output file in csv format.
+
+    Args:
+        input_xml (FileDescriptorOrPath): Input file in xml element format to convert.
+        output_csv (FileDescriptorOrPath): New output file in csv format.
+    """
     with open(output_csv, "w+", newline = "") as csvfile:
         # parsing the xml file
         tree = ET.parse(input_xml)
         root = tree.getroot()
+        # checking if the xml tree has any rows
         if len(root) == 0:
             raise Exception("There are no rows in the file")
         # extracting the attribute names
@@ -38,4 +61,3 @@ def xml_to_csv(input_xml, output_csv):
         for line in values:
             csv_writer.writerow(line)
         print("The file has been parsed!")
-        return
