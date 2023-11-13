@@ -90,7 +90,7 @@ def add_crime_gravity(data, age_path="DATA//dict_participant_age.json", status_p
     return data
 
 
-def add_unique_ids_2(data, columns, id_name='id', path = 'DATA//NEW_TAB//NEW_TAB.csv'):
+def add_unique_ids(data, columns, id_name='id', path = 'DATA//NEW_TAB//NEW_TAB.csv'):
     """Function that subdivides the original table into two new tables keeping lossless join
 
     Args:
@@ -308,43 +308,5 @@ def add_geo_attributes(oldGeo_csv, newGeo_csv):
                 # composing the new dict-row to write in the output file
                 newrow = {"geo_id":geo_id, "latitude":latitude, "longitude":longitude, "city":city, "state":state, "country":country}
                 dwriter.writerow(newrow)
-
-
-    
-def add_unique_ids(data, colums, id_name='id', path = 'DATA//NEW_TAB//NEW_TAB.csv'):
-    # first version of the function 
-    new_table = []
-    id_count = 0
-
-    col_in = find_ind(data[0], colums)
-
-    data[0].append(id_name)
-    for i in sorted(col_in, reverse=True):
-        data[0].pop(i)
-        
-    new_table.append(colums + [id_name])
-
-    for row in data[1:]:
-        new_row = [row[i] for i in col_in]
-        ind = check_if_in_list(new_row, new_table)
-
-        if ind == -1:
-            id_count += 1
-            new_row.append(id_count)
-            new_table.append(new_row)
-        else:
-            id = new_table[ind][-1]
-            new_row.append(id)
-
-        row.append(new_row[-1])
-
-        for i in sorted(col_in, reverse=True):
-            row.pop(i)
-
-    
-    write_to_csv(new_table, path)
-
-
-    return data, new_table
 
 
