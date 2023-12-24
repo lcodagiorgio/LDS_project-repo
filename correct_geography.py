@@ -32,7 +32,8 @@ lat_api_idx = df_api[0].index('lat')
 lng_api_idx = df_api[0].index('lng')
 state_name_api_idx = df_api[0].index('state_name')
 city_api_idx = df_api[0].index('city')
-
+city_api_lat_idx = df_api[0].index('lat')
+city_api_lng_idx = df_api[0].index('lng')
 y = 0
 
 for row in df_geo[1:]:  # Skip header
@@ -42,7 +43,10 @@ for row in df_geo[1:]:  # Skip header
     # find index of minimum distance
     min_index = distances.index(min(distances))
     # create new row with geo_id, lat, lng, city, state, country from df_api
-    new_row = [int(row[geo_id_idx]), row[lat_geo_idx], row[lng_geo_idx], df_api[min_index+1][city_api_idx], df_api[min_index+1][state_name_api_idx], 'United States']  # +1 to skip header
+    new_row = [int(row[geo_id_idx]), row[lat_geo_idx], row[lng_geo_idx], 
+               df_api[min_index+1][city_api_idx], df_api[min_index+1][state_name_api_idx],
+                 'United States', df_api[min_index+1][city_api_lat_idx],
+                 df_api[min_index+1][city_api_lng_idx] ]  # +1 to skip header
     # append new row to df_geo_new
     df_geo_new.append(new_row)
     # if y is multiple of 1000 print y
@@ -51,6 +55,9 @@ for row in df_geo[1:]:  # Skip header
         
 # col_names as first row of df_geo
 col_names = df_geo[0]
+# col names append city_lat and city_lng
+col_names.append('city_lat')
+col_names.append('city_lng')
 # write to csv first row is col_names then each list of df_geo_new
 with open('new_tables\\Geography_corr.csv', 'w', newline='') as f:
     writer = csv.writer(f)
