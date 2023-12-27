@@ -42,7 +42,7 @@ for row in df_geo[1:]:  # Skip header
     distances = [haversine(float(row[lat_geo_idx]), float(row[lng_geo_idx]), float(api_row[lat_api_idx]), float(api_row[lng_api_idx])) for api_row in df_api[1:]]
     # find index of minimum distance
     min_index = distances.index(min(distances))
-    # create new row with geo_id, lat, lng, city, state, country from df_api
+    # create new row with geo_id, lat, lng, city, state, country, city_lat, city_lng from df_api
     new_row = [int(row[geo_id_idx]), row[lat_geo_idx], row[lng_geo_idx], 
                df_api[min_index+1][city_api_idx], df_api[min_index+1][state_name_api_idx],
                  'United States', df_api[min_index+1][city_api_lat_idx],
