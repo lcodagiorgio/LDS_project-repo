@@ -28,7 +28,8 @@ for row in data:
         continue
     y += 1
     # extract values from the row
-    geo_id, latitude, longitude, city, state, country = row
+    geo_id, latitude, longitude, city, state, country, lat, lng = row
+
 
     # Replace single quotes in the string values with two single quotes to escape them for SQL queries
     city = city.replace("'", "''")
@@ -38,7 +39,7 @@ for row in data:
     # Create the query
     query = f"""
     UPDATE Geography
-    SET latitude = {latitude}, longitude = {longitude}, city = '{city}', state = '{state}', country = '{country}'
+    SET latitude = {latitude}, longitude = {longitude}, city = '{city}', state = '{state}', country = '{country}', city_lat = {lat}, city_lng = {lng}
     WHERE geo_id = {geo_id}
     """
 
