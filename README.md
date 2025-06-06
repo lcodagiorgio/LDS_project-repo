@@ -1,6 +1,5 @@
-# LDS_project-repo
- Repository for the Laboratory of Data Science project
-
+# Laboratory of Data Science project
+### Project Codebase
 - `create_tables.py`: Creates the intial tables as csv files
 - `create_tables_geography.py`: Adds the geographycal information from the API
 - `correct_geography.py`: Changes the informations from the API using the uscities.csv file
